@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recomp</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Recomp">
+<meta name="theme-color" content="#152744">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="application-name" content="Recomp">
+<meta name="description" content="Private local-first body recomposition, nutrition, and measurement tracker.">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<style>
+  :root{
+    --bg:#EBEFF6; --card:#FFFFFF; --navy:#152744; --steel:#4C6690; --faint:#6B7A96;
+    --line:#D5DDEA; --grid:#E3E9F2; --yellow:#F2B233; --gold:#B07A12;
+    --yellowSoft:#FCEED0; --amber:#B5701A; --amberSoft:#F6E6CD;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--bg);color:var(--navy);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    padding:max(14px,env(safe-area-inset-top)) 14px calc(28px + env(safe-area-inset-bottom));}
+  .mono{font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,monospace}
+  .wrap{max-width:640px;margin:0 auto}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.03;margin:2px 0 0}
+  .eyebrow{color:var(--gold);font-size:12px;letter-spacing:2px;text-transform:uppercase}
+  .sub{color:var(--faint);font-size:14px;line-height:1.5;margin:8px 0 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px}
+  .h2{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:0}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .muted{color:var(--faint)} .sm{font-size:12px} .xs{font-size:11px}
+  input{background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;
+    font-family:ui-monospace,Menlo,monospace;font-size:15px;color:var(--navy)}
+  input:focus{outline:2px solid var(--navy);border-color:transparent}
+  label{font-size:12px;color:var(--faint);display:block}
+  label input{margin-top:4px}
+  .btn{background:var(--navy);color:#fff;border:none;border-radius:9px;font-weight:600;font-size:14px;
+    padding:10px 16px;cursor:pointer}
+  .btn2{background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:9px;font-weight:600;
+    font-size:13px;padding:9px 14px;cursor:pointer}
+  .link{background:none;border:none;color:var(--faint);text-decoration:underline;font-size:12px;cursor:pointer;padding:0}
+  .seg{display:flex;background:var(--bg);border-radius:9px;padding:3px}
+  .seg button{border:none;background:none;color:var(--faint);font-family:ui-monospace,Menlo,monospace;
+    font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer}
+  .seg button.on{background:var(--navy);color:#fff}
+  .rings{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;margin-top:6px}
+  .ring{display:flex;flex-direction:column;align-items:center;width:80px}
+  .rlab{font-size:12px;font-weight:600;margin-top:4px} .rdet{font-size:11px;color:var(--faint)}
+  .scorebox{text-align:center;min-width:92px}
+  .scoreN{font-family:ui-monospace,Menlo,monospace;font-weight:800;font-size:42px;line-height:1}
+  .bars{margin-top:10px} .barrow{margin-bottom:12px}
+  .bartrack{background:var(--bg);border-radius:99px;height:7px;overflow:hidden;margin-top:5px}
+  .barfill{height:100%}
+  .pill{background:var(--yellowSoft);color:var(--navy);border:1px solid var(--yellow);
+    border-radius:99px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .li{display:flex;align-items:center;justify-content:space-between;font-size:14px;
+    padding:7px 0;border-bottom:1px solid var(--line)}
+  .x{background:none;border:none;color:var(--amber);font-size:16px;cursor:pointer;margin-left:8px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .stat{background:var(--bg);border-radius:10px;padding:9px 8px;text-align:center}
+  .stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--faint)}
+  .stat .v{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:16px;margin-top:3px}
+  .guiddot{width:9px;height:9px;border-radius:99px;display:inline-block}
+  .strip{display:flex;gap:4px;margin-top:8px}
+  .cell{flex:1;text-align:center}
+  .cellbar{height:26px;border-radius:4px}
+  .celld{font-size:9px;color:var(--faint);margin-top:3px;font-family:ui-monospace,Menlo,monospace}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:10px;color:var(--faint)}
+  .legend span{display:flex;align-items:center;gap:4px}
+  .sw{width:9px;height:9px;border-radius:2px;display:inline-block}
+  table{width:100%;border-collapse:collapse;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+  th{color:var(--faint);font-weight:600;text-align:right;padding:4px 6px}
+  th.l,td.l{text-align:left} td{text-align:right;padding:5px 6px;border-top:1px solid var(--line)}
+  .scroll{overflow-x:auto}
+  .foot{color:var(--faint);font-size:11px;text-align:center;line-height:1.5;margin:22px auto 0;max-width:460px}
+  .chline{display:flex;justify-content:space-between;font-size:12px;margin:2px 0 2px}
+  .chlab{font-weight:600} .chunit{color:var(--faint)}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap" id="root"></div>
+
+<script>
+// ---- config --------------------------------------------------------------
+var HEIGHT=182, AGE=39, START_WEIGHT=73;
+var WTHR_TARGET=0.5;
+var MAX_DEFICIT=500, WEIGHT_FLOOR=70, ABS_FLOOR=1900;  // safety limits
+var FIELDS=[
+  {k:"weight",l:"Weight",u:"kg"},{k:"waist",l:"Waist",u:"cm"},{k:"chest",l:"Chest",u:"cm"},
+  {k:"hips",l:"Hips",u:"cm"},{k:"arm",l:"Arm",u:"cm"},{k:"thigh",l:"Thigh",u:"cm"}
+];
+var QUICK=[{name:"Protein shake",p:30,c:4,f:2},{name:"Eggs x3",p:19,c:1,f:15},{name:"Chicken 150g",p:46,c:0,f:5}];
+
+// ---- state / storage -----------------------------------------------------
+function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+var meas=load("rt_meas",[]), nutri=load("rt_nutri",{}), preset=load("rt_preset","deficit");
+var adj=load("rt_adj",{deficit:150,lastChangeDate:null});
+if(typeof adj.deficit!=="number") adj.deficit=150;
+function persist(){localStorage.setItem("rt_meas",JSON.stringify(meas));
+  localStorage.setItem("rt_nutri",JSON.stringify(nutri));localStorage.setItem("rt_preset",preset);
+  localStorage.setItem("rt_adj",JSON.stringify(adj));}
+
+// ---- helpers -------------------------------------------------------------
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+function fmt(n){return (n==null||n===""||isNaN(n))?"\u2014":Number(n).toFixed(1);}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function localDay(off){var d=new Date();if(off)d.setDate(d.getDate()-off);
+  return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
+function today(){return localDay(0);}
+function currentWeight(){var e=sortedMeas();for(var i=e.length-1;i>=0;i--){if(e[i].weight!=null)return e[i].weight;}return START_WEIGHT;}
+function bmr(w){return Math.round(10*w+6.25*HEIGHT-5*AGE+5);}
+function maintenance(){return Math.round(bmr(currentWeight())*1.5);}
+function daysBetween(a,b){return Math.round((new Date(b)-new Date(a))/864e5);}
+function targets(){
+  var m=maintenance(), isCut=preset==="deficit";
+  var f=isCut?70:75, p=150, kcal=isCut?(m-adj.deficit):m;
+  var c=Math.round((kcal-p*4-f*9)/4);
+  var label=isCut?"Mild fat loss":"Maintenance (recomp)";
+  var blurb=isCut
+    ?("~"+adj.deficit+" kcal under maintenance ("+m+"). Belly comes down; protein protects the muscle.")
+    :"Weight holds, composition shifts. Slowest belly change, zero muscle risk.";
+  return {kcal:kcal,p:p,c:c,f:f,maint:m,label:label,blurb:blurb};
+}
+function kcalOf(it){return it.p*4+it.c*4+it.f*9;}
+function totals(items){return items.reduce(function(a,it){return {kcal:a.kcal+kcalOf(it),p:a.p+it.p,c:a.c+it.c,f:a.f+it.f};},{kcal:0,p:0,c:0,f:0});}
+function scoreOf(t,tg){var sP=clamp(t.p/tg.p,0,1),sK=clamp(1-Math.abs(t.kcal-tg.kcal)/tg.kcal,0,1),
+  sC=clamp(1-Math.abs(t.c-tg.c)/tg.c,0,1),sF=clamp(1-Math.abs(t.f-tg.f)/tg.f,0,1);
+  return Math.round(100*(0.35*sP+0.30*sK+0.175*sC+0.175*sF));}
+function sortedMeas(){return meas.slice().sort(function(a,b){return a.date.localeCompare(b.date);});}
+function el(id){return document.getElementById(id);}
+
+// ---- SVG builders --------------------------------------------------------
+function ringSVG(label,pct,color,detail){
+  var size=76,st=8,r=(size-st)/2,c=2*Math.PI*r,off=c*(1-Math.min(1,pct||0));
+  return '<div class="ring"><svg width="'+size+'" height="'+size+'">'+
+    '<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="var(--grid)" stroke-width="'+st+'"/>'+
+    '<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="'+st+'" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'" transform="rotate(-90 '+size/2+' '+size/2+')"/>'+
+    '<text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" class="mono" font-weight="700" font-size="14" fill="var(--navy)">'+Math.round((pct||0)*100)+'%</text>'+
+    '</svg><div class="rlab">'+label+'</div><div class="rdet mono">'+detail+'</div></div>';
+}
+function dialSVG(value){
+  var min=0.4,max=0.6,cx=100,cy=104,R=82,sw=14,circ=Math.PI*R;
+  var t=value==null?0:clamp((value-min)/(max-min),0,1);
+  var good=value!=null&&value<WTHR_TARGET;
+  var col=value==null?"var(--faint)":good?"var(--yellow)":"var(--amber)";
+  var vcol=value==null?"var(--faint)":good?"var(--navy)":"var(--amber)";
+  var arc="M "+(cx-R)+" "+cy+" A "+R+" "+R+" 0 0 1 "+(cx+R)+" "+cy;
+  return '<svg viewBox="0 0 200 128" width="100%" style="max-width:230px">'+
+    '<path d="'+arc+'" fill="none" stroke="var(--grid)" stroke-width="'+sw+'" stroke-linecap="round"/>'+
+    (value!=null?'<path d="'+arc+'" fill="none" stroke="'+col+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-dasharray="'+circ+'" stroke-dashoffset="'+(circ*(1-t))+'"/>':'')+
+    '<line x1="'+cx+'" y1="'+(cy-R-9)+'" x2="'+cx+'" y2="'+(cy-R+9)+'" stroke="var(--navy)" stroke-width="2.5"/>'+
+    '<text x="18" y="122" font-size="9" text-anchor="middle" class="mono" fill="var(--faint)">0.40</text>'+
+    '<text x="182" y="122" font-size="9" text-anchor="middle" class="mono" fill="var(--faint)">0.60</text>'+
+    '<text x="'+cx+'" y="90" font-size="30" text-anchor="middle" class="mono" font-weight="700" fill="'+vcol+'">'+(value==null?"\u2014":value.toFixed(3))+'</text>'+
+    '</svg>';
+}
+function lineChart(points,color,label,unit,refY){
+  var pts=points.filter(function(p){return p.v!=null;});
+  if(pts.length<2) return '';
+  var W=520,H=132,pl=36,pr=10,pt=10,pb=22;
+  var vals=pts.map(function(p){return p.v;});
+  var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);
+  if(refY!=null){mn=Math.min(mn,refY);mx=Math.max(mx,refY);}
+  if(mn===mx){mn-=1;mx+=1;}
+  var pad=(mx-mn)*0.12||1; mn-=pad; mx+=pad;
+  function X(i){return pl+(i/(pts.length-1))*(W-pl-pr);}
+  function Y(v){return pt+(1-(v-mn)/(mx-mn))*(H-pt-pb);}
+  var path=pts.map(function(p,i){return (i?"L":"M")+" "+X(i).toFixed(1)+" "+Y(p.v).toFixed(1);}).join(" ");
+  var dots=pts.map(function(p,i){return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(p.v).toFixed(1)+'" r="3" fill="'+color+'"/>';}).join("");
+  var ref=refY!=null?'<line x1="'+pl+'" y1="'+Y(refY).toFixed(1)+'" x2="'+(W-pr)+'" y2="'+Y(refY).toFixed(1)+'" stroke="var(--gold)" stroke-dasharray="4 4"/><text x="'+(W-pr)+'" y="'+(Y(refY)-4).toFixed(1)+'" font-size="9" text-anchor="end" fill="var(--gold)">target</text>':'';
+  var yl=[mn,(mn+mx)/2,mx].map(function(v){return '<text x="'+(pl-4)+'" y="'+(Y(v)+3).toFixed(1)+'" font-size="9" text-anchor="end" class="mono" fill="var(--faint)">'+v.toFixed(0)+'</text>';}).join("");
+  var xl='<text x="'+X(0)+'" y="'+(H-6)+'" font-size="9" text-anchor="middle" class="mono" fill="var(--faint)">'+pts[0].d+'</text><text x="'+X(pts.length-1)+'" y="'+(H-6)+'" font-size="9" text-anchor="middle" class="mono" fill="var(--faint)">'+pts[pts.length-1].d+'</text>';
+  return '<div class="chline"><span class="chlab">'+label+'</span><span class="chunit mono">'+unit+'</span></div>'+
+    '<svg viewBox="0 0 '+W+' '+H+'" width="100%">'+ref+yl+xl+'<path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="2.5"/>'+dots+'</svg>';
+}
+
+// ---- adaptive analysis + proposals --------------------------------------
+function deepenOr(m,cw,cur,title,extra){
+  var nd=adj.deficit+150, nk=m-nd;
+  if(nd<=MAX_DEFICIT && nk>=ABS_FLOOR && cw>WEIGHT_FLOOR+1){
+    return {tone:"signal",title:title,body:"Waist isn't moving. Trim ~150 kcal from carbs. "+extra,
+      proposal:{action:"deepen",label:"Lower target 150 kcal",detail:"New daily target "+nk+" kcal (down from "+cur+")"}};
+  }
+  return {tone:"signal",title:"At the safe calorie floor \u2014 don't cut further",
+    body:"You're as low as I'd take calories for your size. Don't drop them again \u2014 add a 20\u201330 min conditioning session and hold the current target.",proposal:null};
+}
+function analyze(){
+  var e=sortedMeas(), m=maintenance(), cw=currentWeight(), cur=targets().kcal, isCut=preset==="deficit";
+  if(cw<WEIGHT_FLOOR) return {tone:"signal",title:"Under 70 kg \u2014 back to maintenance",
+    body:"You've dropped below 70 kg, which is lean for your height. I've set you to Maintenance ("+m+" kcal) to protect the muscle you've built. Keep training hard and let the composition catch up.",proposal:null};
+  if(e.length<2) return {tone:"neutral",title:"Log 2\u20133 weeks to unlock guidance",
+    body:"The plan adapts off your trend, not a single reading. Keep logging weekly and this panel will tell you exactly what to change \u2014 with a one-tap adjustment when it's warranted.",proposal:null};
+  var ww=e.filter(function(x){return x.waist!=null;}), wg=e.filter(function(x){return x.weight!=null;});
+  var wa0=ww[0],wa1=ww[ww.length-1],we0=wg[0],we1=wg[wg.length-1];
+  var ref0=(wa0||we0).date, ref1=(wa1||we1).date;
+  var weeks=Math.max(1,(new Date(ref1)-new Date(ref0))/6048e5);
+  var dW=(wa0&&wa1)?wa1.waist-wa0.waist:null;
+  var dKg=(we0&&we1)?(we1.weight-we0.weight)/weeks:null;
+  var changedRecently=adj.lastChangeDate&&daysBetween(adj.lastChangeDate,today())<14;
+
+  if(dKg!=null&&dKg<-0.45){
+    if(isCut) return {tone:"signal",title:"Losing weight too fast \u2014 ease off",
+      body:"You're dropping ~"+fmt(Math.abs(dKg))+" kg/week, which risks muscle. Move up to Maintenance \u2014 the waist is the win, not a lower scale number.",
+      proposal:{action:"toMaint",label:"Switch to Maintenance",detail:"New daily target "+m+" kcal (up from "+cur+")"}};
+    return {tone:"neutral",title:"Weight sliding \u2014 already at maintenance",body:"Hold here and keep protein up. If it keeps falling, nudge calories up a touch.",proposal:null};
+  }
+  if(dW!=null&&dW<=-0.5) return {tone:"go",title:"On track \u2014 hold the plan",
+    body:"Waist down "+fmt(Math.abs(dW))+" cm over ~"+Math.round(weeks)+" week(s). Exactly the curve you want. Don't change anything \u2014 keep eating and training as-is.",proposal:null};
+  if(dW!=null&&dW>=0.6){
+    if(changedRecently) return {tone:"signal",title:"Waist up \u2014 give the new target time",body:"Trend's the wrong way, but you changed your plan recently. Hold the current target, hit protein, and recheck in a week or two.",proposal:null};
+    if(!isCut) return {tone:"signal",title:"Waist creeping up \u2014 start a mild cut",
+      body:"You're gaining in the middle at maintenance. A small deficit turns it around.",
+      proposal:{action:"toCut",label:"Start mild fat loss",detail:"New daily target "+(m-150)+" kcal (\u2212150, off carbs)"}};
+    return deepenOr(m,cw,cur,"Waist creeping up \u2014 tighten a little","Protein first, then carbs.");
+  }
+  if(weeks>=3&&dW!=null&&Math.abs(dW)<0.5){
+    if(changedRecently) return {tone:"neutral",title:"Give the new target ~2 weeks",body:"You adjusted recently. Trends need a couple of weeks to show \u2014 keep logging before changing anything else.",proposal:null};
+    if(!isCut) return {tone:"signal",title:"Stalled \u2014 switch to mild fat loss",
+      body:"Flat on maintenance is fine for pure recomp, but for a faster belly drop, start a small deficit.",
+      proposal:{action:"toCut",label:"Start mild fat loss",detail:"New daily target "+(m-150)+" kcal (\u2212150, off carbs)"}};
+    return deepenOr(m,cw,cur,"Stalled ~3 weeks \u2014 nudge it","Or add one 20\u201330 min conditioning session instead.");
+  }
+  return {tone:"neutral",title:"Steady \u2014 give it another week",body:"Not enough movement yet to act on. Trends need 3\u20134 weeks to read clearly. Keep logging.",proposal:null};
+}
+
+// ---- build shell (once) --------------------------------------------------
+function buildUI(){
+  el("root").innerHTML =
+  '<header>'+
+    '<div class="eyebrow mono">Body recomposition</div>'+
+    '<h1>Lean the middle, keep the frame.</h1>'+
+    '<p class="sub">You\'re already a healthy weight (BMI 22.0). The job isn\'t to get lighter \u2014 it\'s to drop belly fat while the gym builds you back up. So we steer by the tape measure, not the scale.</p>'+
+  '</header>'+
+
+  '<section class="card">'+
+    '<div class="row"><h2 class="h2">Today\'s nutrition</h2><span class="mono xs muted" id="todayDate"></span></div>'+
+    '<p class="sm muted" id="nutriSub" style="margin:6px 0 10px"></p>'+
+    '<div class="rings"><div class="scorebox"><div class="scoreN" id="scoreN">\u2014</div>'+
+      '<div class="xs muted" style="text-transform:uppercase;letter-spacing:.04em;margin-top:3px">Today\'s score</div>'+
+      '<div class="xs mono" id="avg7" style="color:var(--gold);margin-top:2px"></div></div>'+
+      '<div id="rings" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center"></div></div>'+
+    '<div style="margin-top:14px"><div style="display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end">'+
+      '<label style="flex:1;min-width:120px">Food / meal<input id="nName" placeholder="Chicken & rice"></label>'+
+      '<label style="width:64px">Prot g<input id="nP" type="number" inputmode="decimal" placeholder="0"></label>'+
+      '<label style="width:64px">Carb g<input id="nC" type="number" inputmode="decimal" placeholder="0"></label>'+
+      '<label style="width:64px">Fat g<input id="nF" type="number" inputmode="decimal" placeholder="0"></label>'+
+      '<button class="btn" id="addFood">Add</button></div>'+
+      '<div class="chips" id="chips"></div>'+
+      '<div id="todayList" style="margin-top:12px"></div></div>'+
+    '<div style="border-top:1px solid var(--line);margin-top:14px;padding-top:12px">'+
+      '<div class="row"><span class="xs muted" style="text-transform:uppercase;letter-spacing:.04em">Last 14 days</span><span class="xs muted" id="stripCount"></span></div>'+
+      '<div class="strip" id="strip"></div>'+
+      '<div class="legend"><span><i class="sw" style="background:var(--yellow)"></i>80+ dialled in</span><span><i class="sw" style="background:var(--amber)"></i>55\u201379 close</span><span><i class="sw" style="background:var(--line)"></i>under 55</span><span><i class="sw" style="background:var(--grid)"></i>no log</span></div>'+
+    '</div>'+
+  '</section>'+
+
+  '<section class="card">'+
+    '<div class="row"><h2 class="h2">Daily targets</h2>'+
+      '<div class="seg"><button data-p="recomp" id="segR">Maint.</button><button data-p="deficit" id="segD">Cut</button></div></div>'+
+    '<div style="display:flex;align-items:flex-end;gap:8px;margin-top:8px"><span class="mono" id="tgKcal" style="font-size:38px;font-weight:700;letter-spacing:-.02em"></span><span class="sm muted" id="tgLabel" style="margin-bottom:6px"></span></div>'+
+    '<p class="xs muted" id="tgMaint" style="margin:6px 0 2px"></p>'+
+    '<p class="xs muted" id="tgBlurb" style="margin:4px 0 6px"></p>'+
+    '<div class="bars" id="tgBars"></div>'+
+  '</section>'+
+
+  '<section class="card">'+
+    '<h2 class="h2">Waist-to-height</h2>'+
+    '<p class="xs muted" style="margin:4px 0 6px">The single best belly-fat read. Target below 0.50 (waist under 91 cm).</p>'+
+    '<div style="display:flex;flex-direction:column;align-items:center"><div id="dial" style="width:100%;display:flex;justify-content:center"></div>'+
+      '<div id="dialStatus" style="font-weight:600;font-size:13px;margin-top:2px"></div>'+
+      '<div class="xs muted" style="margin-top:2px">Target under 0.50 \u00b7 waist below 91 cm</div></div>'+
+    '<div class="grid2" style="margin-top:12px"><div class="stat"><div class="k">Waist now</div><div class="v" id="stWaist">\u2014</div></div>'+
+      '<div class="stat"><div class="k">To target</div><div class="v" id="stTo">\u2014</div></div></div>'+
+  '</section>'+
+
+  '<section class="card" id="guidCard">'+
+    '<div class="row" style="justify-content:flex-start;gap:8px"><span class="guiddot" id="guidDot"></span><h2 class="h2" id="guidTitle"></h2></div>'+
+    '<p class="sm" id="guidBody" style="margin:6px 0 0;line-height:1.5"></p>'+
+    '<div class="hide" id="proposalBox" style="margin-top:12px;border-top:1px dashed var(--line);padding-top:10px">'+
+      '<div class="sm" id="propDetail" style="font-weight:700;color:var(--navy)"></div>'+
+      '<button class="btn" id="applyBtn" style="margin-top:8px">Apply</button>'+
+      '<div class="xs muted" style="margin-top:6px">Applying updates your daily targets. It won\'t suggest another change for ~2 weeks.</div>'+
+    '</div>'+
+    '<p class="xs muted" id="guidTrain" style="border-top:1px dashed var(--line);margin-top:12px;padding-top:8px"></p>'+
+  '</section>'+
+
+  '<section class="card">'+
+    '<h2 class="h2">Log this week</h2>'+
+    '<div class="grid3" style="margin-top:10px">'+
+      '<label style="grid-column:span 3">Date<input id="mDate" type="date"></label>'+
+      FIELDS.map(function(f){return '<label>'+f.l+' '+f.u+'<input id="m_'+f.k+'" type="number" inputmode="decimal" placeholder="\u2014"></label>';}).join("")+
+    '</div>'+
+    '<label style="margin-top:10px">Notes<input id="mNotes" placeholder="energy, sleep, how training felt\u2026"></label>'+
+    '<div class="row" style="margin-top:12px"><button class="btn" id="saveMeas">Save entry</button><button class="link" id="clearMeas">Clear all</button></div>'+
+  '</section>'+
+
+  '<section class="card hide" id="chartCard"><h2 class="h2">Trends</h2><div id="charts" style="margin-top:6px"></div></section>'+
+
+  '<section class="card hide" id="histCard"><h2 class="h2">History</h2><div class="scroll" id="histTable" style="margin-top:6px"></div></section>'+
+
+  '<section class="card"><h2 class="h2">Backup</h2>'+
+    '<p class="xs muted" style="margin:6px 0 10px">Your data lives only on this phone. Export a copy now and then \u2014 restore it after clearing Safari data or moving to a new device.</p>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn2" id="expBtn">Export backup</button><button class="btn2" id="impBtn">Import backup</button>'+
+    '<input id="impFile" type="file" accept="application/json" style="display:none"></div></section>'+
+
+  '<p class="foot">Estimates from your stats, not medical advice. Re-check the macros if your weight shifts a lot, and see a GP before big changes if anything feels off.</p>';
+}
+
+// ---- updates -------------------------------------------------------------
+function updTargets(){
+  var tg=targets();
+  el("segR").className=preset==="recomp"?"on":"";
+  el("segD").className=preset==="deficit"?"on":"";
+  el("tgKcal").textContent=tg.kcal;
+  el("tgLabel").textContent="kcal \u00b7 "+tg.label;
+  el("tgMaint").textContent="Maintenance ~"+tg.maint+" kcal \u00b7 tracks your current "+fmt(currentWeight())+" kg";
+  el("tgBlurb").textContent=tg.blurb;
+  var rows=[["Protein",tg.p,tg.p*4,"var(--navy)","the priority"],
+    ["Carbs",tg.c,tg.c*4,"var(--steel)","training fuel \u00b7 the lever you adjust"],
+    ["Fat",tg.f,tg.f*9,"var(--amber)","hormonal floor \u2014 don't go lower"]];
+  el("tgBars").innerHTML=rows.map(function(r){var pc=Math.round(r[2]/tg.kcal*100);
+    return '<div class="barrow"><div class="row"><span style="font-weight:600;font-size:14px">'+r[0]+'</span>'+
+      '<span class="mono sm">'+r[1]+' g <span class="muted">\u00b7 '+pc+'%</span></span></div>'+
+      '<div class="bartrack"><div class="barfill" style="width:'+pc+'%;background:'+r[3]+'"></div></div>'+
+      '<div class="xs muted" style="margin-top:3px">'+r[4]+'</div></div>';}).join("");
+}
+function updNutrition(){
+  var tg=targets(), items=(nutri[today()]||{}).items||[], tot=totals(items);
+  var sc=items.length?scoreOf(tot,tg):null;
+  el("todayDate").textContent=new Date(today()+"T00:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})+" \u00b7 resets at midnight";
+  el("nutriSub").innerHTML='Targets from your <b style="color:var(--navy)">'+esc(tg.label)+'</b> plan. Log meals through the day; the rings fill as you go.';
+  var sN=el("scoreN"); sN.textContent=sc==null?"\u2014":sc; sN.style.color=sc==null?"var(--faint)":(sc>=75?"var(--navy)":"var(--amber)");
+  // 7 day avg
+  var last7=[]; for(var i=0;i<7;i++){var d=localDay(i);var it=(nutri[d]||{}).items||[];if(it.length)last7.push(scoreOf(totals(it),tg));}
+  el("avg7").textContent=last7.length?("7-day avg "+Math.round(last7.reduce(function(a,b){return a+b;},0)/last7.length)):"";
+  var calPct=tot.kcal/tg.kcal, calCol=calPct>1.05?"var(--amber)":"var(--yellow)";
+  el("rings").innerHTML=ringSVG("Calories",calPct,calCol,Math.round(tot.kcal)+" / "+tg.kcal)+
+    ringSVG("Protein",tot.p/tg.p,"var(--navy)",Math.round(tot.p)+" / "+tg.p+" g")+
+    ringSVG("Carbs",tot.c/tg.c,"var(--steel)",Math.round(tot.c)+" / "+tg.c+" g")+
+    ringSVG("Fat",tot.f/tg.f,"var(--amber)",Math.round(tot.f)+" / "+tg.f+" g");
+  // list
+  var lst=el("todayList");
+  if(items.length){
+    lst.innerHTML=items.map(function(it,i){return '<div class="li"><span style="font-weight:500">'+esc(it.name)+'</span>'+
+      '<span class="mono xs muted">'+Math.round(kcalOf(it))+'kcal \u00b7 '+it.p+'p '+it.c+'c '+it.f+'f<button class="x" data-i="'+i+'">\u00d7</button></span></div>';}).join("")+
+      '<button class="link" id="clrToday" style="margin-top:8px">Clear today</button>';
+    Array.prototype.forEach.call(lst.querySelectorAll(".x"),function(b){b.onclick=function(){
+      var i=+b.getAttribute("data-i"); var t=today(); nutri[t].items.splice(i,1); persist(); updNutrition();};});
+    el("clrToday").onclick=function(){if(confirm("Clear everything logged today?")){nutri[today()]={items:[]};persist();updNutrition();}};
+  } else { lst.innerHTML='<p class="xs muted">Nothing logged yet today. Add a meal above, or tap a quick-add.</p>'; }
+  // strip
+  var cells=""; var count=0;
+  for(var j=13;j>=0;j--){var dd=localDay(j);var it2=(nutri[dd]||{}).items||[];var s=it2.length?scoreOf(totals(it2),tg):null;if(s!=null)count++;
+    var col=s==null?"var(--grid)":s>=80?"var(--yellow)":s>=55?"var(--amber)":"var(--line)";
+    var border=dd===today()?"border:2px solid var(--navy)":"";
+    cells+='<div class="cell" title="'+dd+': '+(s==null?"no log":s)+'"><div class="cellbar" style="background:'+col+';'+border+'"></div><div class="celld">'+dd.slice(8)+'</div></div>';}
+  el("strip").innerHTML=cells; el("stripCount").textContent=count+" logged";
+}
+function updDial(){
+  var e=sortedMeas(), latest=e[e.length-1]||null;
+  var wv=latest&&latest.waist!=null?latest.waist/HEIGHT:null;
+  el("dial").innerHTML=dialSVG(wv);
+  var good=wv!=null&&wv<WTHR_TARGET;
+  var st=el("dialStatus");
+  st.textContent=wv==null?"Log a waist measurement":good?"In the healthy zone":"Above target \u2014 keep going";
+  st.style.color=wv==null?"var(--faint)":good?"var(--navy)":"var(--amber)";
+  el("stWaist").textContent=(latest&&latest.waist!=null)?fmt(latest.waist)+" cm":"\u2014";
+  el("stTo").textContent=(latest&&latest.waist!=null)?fmt(latest.waist-HEIGHT*WTHR_TARGET)+" cm":"\u2014";
+}
+var pendingProposal=null;
+function updAnalysis(){
+  var g=analyze();
+  var card=el("guidCard");
+  card.style.background=g.tone==="go"?"var(--yellowSoft)":g.tone==="signal"?"var(--amberSoft)":"var(--card)";
+  card.style.borderColor=g.tone==="go"?"var(--yellow)":g.tone==="signal"?"var(--amber)":"var(--line)";
+  el("guidDot").style.background=g.tone==="go"?"var(--yellow)":g.tone==="signal"?"var(--amber)":"var(--faint)";
+  var tt=el("guidTitle"); tt.textContent=g.title; tt.style.color=g.tone==="signal"?"var(--amber)":"var(--navy)";
+  el("guidBody").textContent=g.body;
+  pendingProposal=g.proposal||null;
+  var pb=el("proposalBox");
+  if(g.proposal){pb.className=""; el("propDetail").textContent=g.proposal.detail; el("applyBtn").textContent=g.proposal.label;}
+  else pb.className="hide";
+  var e=sortedMeas(); var tn=el("guidTrain");
+  if(e.length){var wk=Math.floor((Date.now()-new Date(e[0].date))/6048e5);var due=wk>0&&wk%4===0;
+    tn.style.display="";
+    tn.textContent="Training \u00b7 week "+wk+", block "+(Math.floor(wk/4)+1)+". "+(due?"4-week mark: add load or reps to your main lifts, or rotate in a new variation this block.":"Progress something small each session (a rep, a little weight). Re-jig exercises every 4 weeks.");
+  } else tn.style.display="none";
+}
+function applyProposal(){
+  if(!pendingProposal) return;
+  var a=pendingProposal.action;
+  if(a==="toMaint"){preset="recomp";}
+  else if(a==="toCut"){preset="deficit"; adj.deficit=150;}
+  else if(a==="deepen"){preset="deficit"; adj.deficit=Math.min(adj.deficit+150,MAX_DEFICIT);}
+  adj.lastChangeDate=today(); persist(); updAll();
+}
+function updCharts(){
+  var e=sortedMeas();
+  if(e.length<2){el("chartCard").className="card hide";return;}
+  el("chartCard").className="card";
+  var w=e.map(function(x){return {d:x.date.slice(5),v:x.waist!=null?x.waist:null};});
+  var kg=e.map(function(x){return {d:x.date.slice(5),v:x.weight!=null?x.weight:null};});
+  el("charts").innerHTML=lineChart(w,"var(--navy)","Waist","cm",HEIGHT*WTHR_TARGET)+
+    '<div style="height:10px"></div>'+lineChart(kg,"var(--steel)","Weight","kg",null);
+}
+function updHistory(){
+  var e=sortedMeas();
+  if(!e.length){el("histCard").className="card hide";return;}
+  el("histCard").className="card";
+  var head='<tr><th class="l">Date</th>'+FIELDS.map(function(f){return '<th>'+f.l+'</th>';}).join("")+'<th></th></tr>';
+  var rows=e.slice().reverse().map(function(x){
+    return '<tr><td class="l">'+x.date.slice(5)+'</td>'+FIELDS.map(function(f){return '<td>'+fmt(x[f.k])+'</td>';}).join("")+
+      '<td><button class="x" data-d="'+x.date+'">\u00d7</button></td></tr>';}).join("");
+  var t=el("histTable"); t.innerHTML='<table>'+head+rows+'</table>';
+  Array.prototype.forEach.call(t.querySelectorAll(".x"),function(b){b.onclick=function(){
+    var d=b.getAttribute("data-d"); meas=meas.filter(function(m){return m.date!==d;}); persist(); updAll();};});
+}
+function enforceSafety(){ if(currentWeight()<WEIGHT_FLOOR && preset==="deficit"){preset="recomp"; persist();} }
+function updAll(){enforceSafety();updTargets();updNutrition();updDial();updAnalysis();updCharts();updHistory();}
+
+// ---- events --------------------------------------------------------------
+function wire(){
+  el("chips").innerHTML=QUICK.map(function(q,i){return '<button class="pill" data-i="'+i+'">+ '+esc(q.name)+'</button>';}).join("");
+  Array.prototype.forEach.call(el("chips").querySelectorAll(".pill"),function(b){b.onclick=function(){
+    var q=QUICK[+b.getAttribute("data-i")]; var t=today(); if(!nutri[t])nutri[t]={items:[]};
+    nutri[t].items.push({name:q.name,p:q.p,c:q.c,f:q.f}); persist(); updNutrition();};});
+  el("addFood").onclick=function(){
+    var it={name:el("nName").value||"Item",p:+el("nP").value||0,c:+el("nC").value||0,f:+el("nF").value||0};
+    if(!it.p&&!it.c&&!it.f) return;
+    var t=today(); if(!nutri[t])nutri[t]={items:[]}; nutri[t].items.push(it); persist();
+    el("nName").value="";el("nP").value="";el("nC").value="";el("nF").value=""; updNutrition();};
+  el("segR").onclick=function(){preset="recomp";persist();updAll();};
+  el("segD").onclick=function(){preset="deficit";adj.deficit=150;adj.lastChangeDate=today();persist();updAll();};
+  el("applyBtn").onclick=function(){applyProposal();};
+  el("mDate").value=today();
+  el("saveMeas").onclick=function(){
+    var d=el("mDate").value||today(); var row={date:d,notes:el("mNotes").value||""};
+    var any=false; FIELDS.forEach(function(f){var v=el("m_"+f.k).value; row[f.k]=v===""?null:+v; if(v!=="")any=true;});
+    if(!any) return;
+    meas=meas.filter(function(m){return m.date!==d;}); meas.push(row); persist();
+    FIELDS.forEach(function(f){el("m_"+f.k).value="";}); el("mNotes").value="";
+    updAll();};
+  el("clearMeas").onclick=function(){if(confirm("Delete all logged measurements? This can't be undone.")){meas=[];persist();updAll();}};
+  el("expBtn").onclick=function(){
+    var blob=new Blob([JSON.stringify({v:1,exportedAt:new Date().toISOString(),preset:preset,adj:adj,meas:meas,nutri:nutri},null,2)],{type:"application/json"});
+    var url=URL.createObjectURL(blob); var a=document.createElement("a"); a.href=url; a.download="recomp-backup-"+today()+".json"; a.click();
+    setTimeout(function(){URL.revokeObjectURL(url);},1500);};
+  el("impBtn").onclick=function(){el("impFile").click();};
+  el("impFile").onchange=function(ev){
+    var file=ev.target.files[0]; if(!file) return; var rd=new FileReader();
+    rd.onload=function(){try{var o=JSON.parse(rd.result);
+      if(!confirm("Replace current data with this backup?")) return;
+      meas=o.meas||[]; nutri=o.nutri||{}; preset=o.preset||preset; adj=o.adj||adj; persist(); updAll();
+      el("mDate").value=today(); alert("Backup restored.");
+    }catch(e){alert("Couldn't read that file \u2014 make sure it's a Recomp backup.");}};
+    rd.readAsText(file); ev.target.value="";};
+}
+
+buildUI(); wire(); updAll();
+// Register service worker for Home Screen/PWA offline caching.
+// It is skipped for file:// because service workers require a secure origin.
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("./sw.js").catch(function(err){
+      console.log("Service worker registration skipped:", err && err.message ? err.message : err);
+    });
+  });
+}
+
+</script>
+</body>
+</html>

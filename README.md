@@ -1,14 +1,18 @@
-# Recomp Tracker PWA
+# Recomp Tracker PWA — recipes and nutrition drawer
 
-This is a PWA-ready version of `recomp-tracker-app.html`.
+This package keeps the original local-first tracker and adds:
 
-Files:
-- `index.html`: the app, still local-first and self-contained except for the PWA helper files.
-- `manifest.webmanifest`: app metadata for Home Screen install.
-- `sw.js`: service worker cache for offline loading after first visit.
-- `icon-*.png`: app icons.
+- reusable recipes stored locally under the new `rt_recipes` key;
+- a slide-out nutrition menu with the last five days of protein, carbohydrate and fat totals;
+- five-day summary statistics;
+- one-tap recipe logging into today's intake;
+- recipe support in JSON backup/export while remaining compatible with older backups.
 
-Deploy the whole folder to an HTTPS host such as GitHub Pages, Netlify, Vercel, or your own server.
-Then open the URL on iPhone in Safari and use Share -> Add to Home Screen.
+Existing storage keys remain unchanged:
 
-Your measurements and nutrition entries remain in the browser on the phone via localStorage. Use the Export backup button periodically.
+- `rt_meas`
+- `rt_nutri`
+- `rt_preset`
+- `rt_adj`
+
+Deploy all files together to the same GitHub Pages repository. Replace the old files, including `sw.js`, so the service-worker cache moves to the new version. Existing measurements and nutrition entries remain in the browser's local storage at the same site URL.

@@ -1,4 +1,4 @@
-const CACHE_NAME = "recomp-pwa-v1";
+const CACHE_NAME = "recomp-pwa-v2-recipes";
 const APP_SHELL = [
   "./",
   "./index.html",

@@ -1,18 +1,39 @@
-# Recomp Tracker PWA — recipes and nutrition drawer
+# Recomp Tracker PWA — version 3.0.0
 
-This package keeps the original local-first tracker and adds:
+This release keeps the existing local-first tracker and adds an Apple Health / Apple Watch activity bridge using the iPhone Shortcuts app.
 
-- reusable recipes stored locally under the new `rt_recipes` key;
-- a slide-out nutrition menu with the last five days of protein, carbohydrate and fat totals;
-- five-day summary statistics;
-- one-tap recipe logging into today's intake;
-- recipe support in JSON backup/export while remaining compatible with older backups.
+## Added in version 3
 
-Existing storage keys remain unchanged:
+- daily Active Energy, Resting Energy, derived Total Energy, Steps, and Exercise Minutes;
+- a `Sync Apple Health` button that runs a Shortcut named `Recomp Health Sync`;
+- clipboard import after the Shortcut returns to Recomp;
+- seven-day activity history and averages;
+- manual activity entry as a fallback;
+- activity data in version-3 JSON backups;
+- a new independent local-storage key: `rt_activity`.
+
+## Existing data remains compatible
+
+These existing keys are unchanged:
 
 - `rt_meas`
 - `rt_nutri`
 - `rt_preset`
 - `rt_adj`
+- `rt_recipes`
 
-Deploy all files together to the same GitHub Pages repository. Replace the old files, including `sw.js`, so the service-worker cache moves to the new version. Existing measurements and nutrition entries remain in the browser's local storage at the same site URL.
+Do not change the GitHub Pages address when deploying this release. Browser data is tied to the existing site origin.
+
+## Files
+
+- `index.html` — complete tracker application;
+- `manifest.webmanifest` — Home Screen / PWA metadata;
+- `sw.js` — offline cache, versioned for this release;
+- `APPLE-SHORTCUT-SETUP.md` — build instructions for the Apple Health Shortcut;
+- `GITHUB-UPDATE-GUIDE.md` — safe branch and merge workflow;
+- `CHANGELOG.md` — release changes;
+- `RELEASE-CHECKS.md` — validation completed before packaging;
+- `SHORTCUT-PAYLOAD.txt` — payload template for the Shortcut Text action;
+- `VERSION` — release number.
+
+Before deployment, use **Export backup** in the currently installed tracker. Then follow `GITHUB-UPDATE-GUIDE.md`.

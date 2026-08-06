@@ -1,7 +1,7 @@
 {
   "name": "Recomp Tracker",
   "short_name": "Recomp",
-  "description": "Private local-first body recomposition, nutrition, and measurement tracker.",
+  "description": "Private local-first body recomposition, nutrition, Apple Health activity, and measurement tracker.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

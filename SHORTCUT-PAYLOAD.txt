@@ -1,0 +1,1 @@
+RECOMP_HEALTH_V1|date=[SyncDate]|active=[Active]|resting=[Resting]|steps=[Steps]|exercise=[Exercise]

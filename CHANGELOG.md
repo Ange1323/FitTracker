@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.1.0 — Dark performance UI
+
+- Restyled the entire app on a dark canvas (`#0E1626`) with amber, mint and coral accents.
+- Collapsible drawer sections — Apple Watch activity, Last 5 days, 5-day stats, Saved recipes.
+  Built on native `<details>`/`<summary>`, so they collapse without any JavaScript.
+- Collapsed section headers keep their summary readable: the sync status badge and the recipe count.
+- Score readout signals mint at 75+ and coral below, with a glow that follows the active colour.
+- Updated `theme-color`, manifest colours, and the iOS status-bar style for the dark canvas.
+- Service-worker cache renamed to `recomp-pwa-v3-1-dark`.
+- **No storage changes.** `rt_meas`, `rt_nutri`, `rt_preset`, `rt_adj`, `rt_recipes` and
+  `rt_activity` are untouched, so deploying over the existing Pages URL preserves all history.
+
 ## 3.0.0 — Apple Health Shortcut bridge
 
 - Added a new `rt_activity` local-storage key for daily Apple Health records.

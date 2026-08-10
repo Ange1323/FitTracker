@@ -1,6 +1,15 @@
-# Recomp Tracker PWA — version 3.0.0
+# Recomp Tracker PWA — version 3.1.0
 
-This release keeps the existing local-first tracker and adds an Apple Health / Apple Watch activity bridge using the iPhone Shortcuts app.
+This release keeps the existing local-first tracker and the Apple Health / Apple Watch activity
+bridge, and restyles the app on a dark canvas with collapsible drawer sections.
+
+## Added in version 3.1
+
+- a dark UI across the whole app, with amber, mint and coral accents;
+- collapsible drawer sections for Apple Watch activity, recent days, stats, and saved recipes;
+- summary values (sync status, recipe count) visible on collapsed headers.
+
+No storage keys changed in 3.1. Deploy over the same Pages URL and all history is preserved.
 
 ## Added in version 3
 

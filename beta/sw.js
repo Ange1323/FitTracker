@@ -1,7 +1,7 @@
-// Root deployment. Cleans up its own caches and any legacy pre-3.1 ones,
-// but never touches the /beta/ deployment's caches.
-const CACHE_PREFIX = "recomp-root-";
-const CACHE_NAME = "recomp-root-v3-1-dark";
+// /beta/ deployment. Only ever deletes its own caches, so it cannot
+// evict the root app's cache (Cache Storage is shared per origin).
+const CACHE_PREFIX = "recomp-beta-";
+const CACHE_NAME = "recomp-beta-v3-2-gemini";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -23,7 +23,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys()
       .then((keys) => Promise.all(
-        keys.filter((key) => key !== CACHE_NAME && (key.startsWith(CACHE_PREFIX) || key.startsWith("recomp-pwa-")))
+        keys.filter((key) => key !== CACHE_NAME && key.startsWith(CACHE_PREFIX))
            .map((key) => caches.delete(key))
       ))
       .then(() => self.clients.claim())

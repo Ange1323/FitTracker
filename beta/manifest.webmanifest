@@ -1,6 +1,6 @@
 {
-  "name": "Recomp Tracker",
-  "short_name": "Recomp",
+  "name": "Recomp Beta",
+  "short_name": "Recomp β",
   "description": "Private local-first body recomposition, nutrition, Apple Health activity, and measurement tracker.",
   "start_url": "./index.html",
   "scope": "./",

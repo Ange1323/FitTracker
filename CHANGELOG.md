@@ -1,5 +1,21 @@
 # Changelog
 
+## 4.1.0 — Collapsible History
+
+The History card on the home page is now collapsed by default and opens on tap.
+With a few months of weekly entries it had grown to roughly 570px of scroll
+between Trends and Backup; collapsed it is a single 53px row showing the entry
+count, so the cards below it are reachable again.
+
+- Built as a reusable `.cardAcc` collapsible card, so the same treatment can be
+  applied to other long cards later without new CSS.
+- Deleting a row still works and the card stays open while you do it; the entry
+  count updates live.
+- All rules use child combinators, so they cannot reach into the drawer
+  accordions the way the v4 chevron rule did.
+
+Service-worker cache renamed to `recomp-root-v4-1`. No storage changes.
+
 ## 4.0.0 — Day detail and selectable trends
 
 **Last 5 days is now expandable.** Tap a day to see every item logged, each with

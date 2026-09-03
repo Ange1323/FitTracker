@@ -1,59 +1,70 @@
-# Deploying version 4
+# Safe GitHub update workflow for version 3
 
-Repository: `ange1323/FitTracker` · Pages: `https://ange1323.github.io/FitTracker/`
-Pages builds from `main`, repository root.
+Recommended branch:
 
-**The Pages address must not change.** All tracker data lives in `localStorage`
-scoped to the origin `https://ange1323.github.io`.
+`feature/apple-health-sync-v3`
 
-## Before you start
+Recommended commit message:
 
-Open the live app and tap **Export backup**. Keep the JSON.
+`Add Apple Health Shortcut bridge v3`
 
-## 1. Branch
+## Before changing GitHub
 
-Branch selector → type `feature/v4-day-detail-trends` →
-**Create branch: … from main**. Confirm the selector shows the new branch.
+1. Open the currently published Recomp app.
+2. Tap **Export backup** and keep the JSON file.
+3. Confirm that the GitHub repository and Pages URL will remain the same.
 
-## 2. Upload
+## Create the branch in GitHub
 
-**Add file → Upload files**, drag in everything from this folder, and commit to
-the branch with:
+1. Open the repository on GitHub.
+2. Open the branch selector, which currently shows `main`.
+3. Type `feature/apple-health-sync-v3`.
+4. Choose **Create branch: feature/apple-health-sync-v3 from main**.
+5. Confirm the branch selector now shows the new branch.
 
-`V4: expandable day entries, selectable trend metrics`
+## Upload this release to the branch
 
-These are root files only. The existing `beta/` folder is untouched by this
-upload and stays on version 3.2.
+1. On the new branch, choose **Add file → Upload files**.
+2. Upload the files from this release folder into the same repository location as the current `index.html`.
+3. Replace the existing files when GitHub reports matching names.
+4. Commit with `Add Apple Health Shortcut bridge v3`.
 
-## 3. Verify on the branch
+At minimum, replace:
 
-| File | Must contain |
-|---|---|
-| `index.html` | `data-readd`, `accTrends`, `CHART_COLOR` |
-| `sw.js` | `recomp-root-v4` |
-| `VERSION` | `4.0.0` |
+- `index.html`
+- `manifest.webmanifest`
+- `sw.js`
 
-Confirm the original storage keys are still present in `index.html`:
-`rt_meas`, `rt_nutri`, `rt_preset`, `rt_adj`, `rt_recipes`, `rt_activity`.
-Version 4 adds one new key, `rt_charts`, holding the trend selection only.
+Also upload the icons if they are not already present. The Markdown guides, `.nojekyll`, `CHANGELOG.md`, and `VERSION` are recommended but do not affect the app runtime.
 
-## 4. Merge
+## Review before publishing
 
-**Contribute → Open pull request**, base `main`, review **Files changed**,
-then **Merge pull request**. Pages rebuilds in 1–2 minutes.
+On the branch, verify:
 
-## 5. Refresh the iPhone
+- `index.html` contains `rt_activity`;
+- `sw.js` contains `recomp-pwa-v3-apple-health`;
+- the original storage keys still appear unchanged;
+- GitHub shows only the intended files in the branch comparison.
 
-1. Open the Pages URL in Safari and pull to refresh.
-2. Fully close the Home Screen app (swipe the card away, not just Home).
-3. Reopen. A second close/reopen is often needed before the new service worker
-   takes control.
-4. Confirm: tapping a day under **Last 5 days** expands it, and a **Trends**
-   section appears in the drawer.
+## Merge to main
 
-Never use Safari's *Clear History and Website Data*, and do not delete the Home
-Screen icon — both wipe `localStorage` for the whole origin.
+1. Choose **Contribute → Open pull request**, or open the repository’s **Pull requests** tab.
+2. Base branch: `main`.
+3. Compare branch: `feature/apple-health-sync-v3`.
+4. Create the pull request.
+5. Review the file changes.
+6. Choose **Merge pull request** and confirm.
+
+If GitHub Pages is configured to deploy from `main` and the repository root, the merge publishes version 3.
+
+## Refresh the iPhone app
+
+1. Open the GitHub Pages URL once in Safari and refresh it.
+2. Fully close the Recomp Home Screen app.
+3. Reopen it. A second close/reopen may be needed while the new service worker takes control.
+4. Confirm the **Apple Watch activity** card appears.
+5. Do not delete the Home Screen icon and do not clear Safari website data.
 
 ## Rollback
 
-Revert the merge commit on `main`. Code rolls back; stored data is unaffected.
+If the new release has a problem, revert the merge commit in GitHub or restore the old files on `main`. The new `rt_activity` key is independent, so rolling back the code does not alter the original tracker data.

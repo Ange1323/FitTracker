@@ -236,6 +236,20 @@
   .trendSw{width:11px;height:11px;border-radius:3px;flex:0 0 auto;opacity:.35}
   .trendChip.on .trendSw{opacity:1}
   .trendNote{font-size:11px;line-height:1.5;color:var(--faint);margin:0 0 9px}
+  /* --- v4.1: collapsible card --- */
+  .cardAcc{padding:0;overflow:hidden}
+  .cardAcc > .cardHead{display:flex;align-items:center;gap:10px;padding:18px;cursor:pointer;
+    list-style:none;user-select:none;-webkit-user-select:none}
+  .cardAcc > .cardHead::-webkit-details-marker{display:none}
+  .cardAcc > .cardHead:focus-visible{outline:2px solid var(--yellow);outline-offset:-2px}
+  .cardAcc > .cardHead .h2{flex:1 1 auto;min-width:0}
+  .cardAcc[open] > .cardHead .h2{color:var(--gold)}
+  .cardAcc > .cardHead .cardMeta{font-family:ui-monospace,Menlo,monospace;font-size:11px;
+    color:var(--faint);white-space:nowrap}
+  .cardAcc > .cardHead .cardChev{flex:0 0 auto;width:15px;height:15px;color:var(--faint);
+    transition:transform .2s ease}
+  .cardAcc[open] > .cardHead .cardChev{transform:rotate(90deg);color:var(--gold)}
+  .cardAcc > .cardBody{padding:0 18px 18px}
   .hide{display:none}
 </style>
 </head>
@@ -816,7 +830,11 @@ function buildUI(){
 
   '<section class="card hide" id="chartCard"><h2 class="h2">Trends</h2><div id="charts" style="margin-top:6px"></div></section>'+
 
-  '<section class="card hide" id="histCard"><h2 class="h2">History</h2><div class="scroll" id="histTable" style="margin-top:6px"></div></section>'+
+  '<details class="card cardAcc hide" id="histCard">'+
+    '<summary class="cardHead"><h2 class="h2">History</h2>'+
+      '<span class="cardMeta" id="histCount"></span><svg class="cardChev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>'+
+    '<div class="cardBody"><div class="scroll" id="histTable"></div></div>'+
+  '</details>'+
 
   '<section class="card"><h2 class="h2">Backup</h2>'+
     '<p class="xs muted" style="margin:6px 0 10px">Your data lives only on this phone. Export a copy now and then \u2014 restore it after clearing Safari data or moving to a new device.</p>'+
@@ -956,8 +974,9 @@ function renderTrendToggles(){
 }
 function updHistory(){
   var e=sortedMeas();
-  if(!e.length){el("histCard").className="card hide";return;}
-  el("histCard").className="card";
+  if(!e.length){el("histCard").className="card cardAcc hide";return;}
+  el("histCard").className="card cardAcc";
+  el("histCount").textContent=e.length+(e.length===1?" entry":" entries");
   var head='<tr><th class="l">Date</th>'+FIELDS.map(function(f){return '<th>'+f.l+'</th>';}).join("")+'<th></th></tr>';
   var rows=e.slice().reverse().map(function(x){
     return '<tr><td class="l">'+x.date.slice(5)+'</td>'+FIELDS.map(function(f){return '<td>'+fmt(x[f.k])+'</td>';}).join("")+

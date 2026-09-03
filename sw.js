@@ -1,7 +1,7 @@
 // Root deployment. Cleans up its own caches and any legacy pre-3.1 ones,
 // but never touches the /beta/ deployment's caches.
 const CACHE_PREFIX = "recomp-root-";
-const CACHE_NAME = "recomp-root-v4";
+const CACHE_NAME = "recomp-root-v4-1";
 const APP_SHELL = [
   "./",
   "./index.html",

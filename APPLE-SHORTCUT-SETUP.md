@@ -34,7 +34,19 @@ The Recomp button launches a Shortcut with this exact name.
    - Source: your **Apple Watch**, when the Source filter is available
 3. Add **Get Details of Health Samples** and choose **Value**. If your version lets **Calculate Statistics** accept the samples directly, this intermediate action can be omitted.
 4. Add **Calculate Statistics** and choose **Sum**.
-5. Rename the result `Active`.
+5. Add **Round Number** and set it to the **Ones Place**.
+6. Add **Set Variable**, name it `Active`, and point its value at **Rounded Number**.
+
+**Do not skip the rounding.** Recomp's number parser reads a value with exactly
+three decimals — `active=740.544` — as a thousands-separated integer (740544),
+which fails the range check and rejects the whole import. Rounding removes the
+ambiguity. Round the steps value too: a sum of `12196.0` would otherwise be read
+as 121960, which is inside the valid range and so imports silently wrong.
+
+**Set Variable does not rewire itself.** If you insert Round Number into an
+existing shortcut, the Set Variable below it still points at the old
+Calculate Statistics output. Tap its blue variable chip and change it to
+**Rounded Number**, or the rounding has no effect.
 
 ## 4. Read Resting Energy
 
@@ -103,6 +115,10 @@ The record overwrites only the same date in `rt_activity`. It does not change nu
 - **Shortcut not found:** verify the exact name `Recomp Health Sync`.
 - **Clipboard is empty:** run the Shortcut directly and confirm the last data action is **Copy to Clipboard**.
 - **No recognised values:** verify the Text action starts with `RECOMP_HEALTH_V1|` and uses the field names shown above.
+- **Two Apple Watches in the Source list:** an old paired Watch stays listed forever and holds
+  no data for today. Picking it returns no samples. Use the same Watch for all four metrics.
+- **“Invalid active value” on import:** the value reached Recomp with three decimals. Add the
+  Round Number step above.
 - **A value is unexpectedly high:** add the Source filter for your Apple Watch so iPhone and Watch samples are not both summed.
 - **Exercise is unavailable:** remove `|exercise=[Exercise]`; the other fields still import.
 - **Test without the Shortcut:** open the side menu, expand **Shortcut setup & manual fallback**, and enter the values manually.

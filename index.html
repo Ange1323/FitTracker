@@ -133,8 +133,8 @@
     flex:1 1 auto;min-width:0}
   .acc[open] .accTitle{color:var(--gold)}
   .accMeta{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--faint);white-space:nowrap}
-  .accChev{flex:0 0 auto;width:15px;height:15px;color:var(--faint);transition:transform .2s ease}
-  .acc[open] .accChev{transform:rotate(90deg);color:var(--gold)}
+  .accHead > .accChev{flex:0 0 auto;width:15px;height:15px;color:var(--faint);transition:transform .2s ease}
+  .acc[open] > .accHead .accChev{transform:rotate(90deg);color:var(--gold)}
   .accBody{padding:0 14px 14px}
 
   .macro5{margin-top:9px}
@@ -204,6 +204,38 @@
   @media(prefers-reduced-motion:reduce){
     *{transition:none !important}
   }
+  /* --- Mod 1: expandable day entries --- */
+  .dayRow{border:1px solid var(--line);border-radius:12px;background:var(--sunk);margin-top:8px;overflow:hidden}
+  .dayRow[open]{background:#101A2B}
+  .dayRow.empty{display:flex;align-items:center;gap:9px;padding:11px 12px;opacity:.55}
+  .dayHead{display:flex;align-items:center;gap:9px;padding:11px 12px;cursor:pointer;list-style:none;
+    user-select:none;-webkit-user-select:none}
+  .dayHead::-webkit-details-marker{display:none}
+  .dayHead:focus-visible{outline:2px solid var(--yellow);outline-offset:-2px}
+  .dayRow .accChev{width:14px;height:14px;flex:0 0 auto;color:var(--faint);transition:transform .2s ease}
+  .dayRow[open] .accChev{transform:rotate(90deg);color:var(--gold)}
+  .dayLabel{flex:1 1 auto;font-size:13px;font-weight:650;min-width:0}
+  .dayLabel small{display:block;color:var(--faint);font-weight:400;font-size:10px;margin-top:1px}
+  .dayMacros{font-size:11px;color:var(--faint);white-space:nowrap}
+  .dayRow[open] .dayMacros{color:var(--gold)}
+  .dayBody{padding:0 12px 10px}
+  .dayItem{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:9px 0;border-top:1px solid var(--line)}
+  .dayItemMain{min-width:0}
+  .dayItemName{font-size:13px;font-weight:650;overflow-wrap:anywhere}
+  .dayItemMeta{font-size:10.5px;color:var(--faint);margin-top:2px}
+  .dayAdd{flex:0 0 auto;border:0;border-radius:9px;background:linear-gradient(180deg,var(--gold),var(--yellow));
+    color:#1A1204;font-weight:750;font-size:11.5px;padding:7px 10px;cursor:pointer}
+  .dayAdd:active{transform:translateY(1px)}
+  /* --- Mod 2: trend metric toggles --- */
+  .trendGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px}
+  .trendChip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:10px;
+    background:var(--sunk);color:var(--faint);font-size:12.5px;font-weight:650;padding:9px 10px;
+    cursor:pointer;text-align:left}
+  .trendChip.on{color:var(--navy);border-color:#3A4A6B;background:#101A2B}
+  .trendSw{width:11px;height:11px;border-radius:3px;flex:0 0 auto;opacity:.35}
+  .trendChip.on .trendSw{opacity:1}
+  .trendNote{font-size:11px;line-height:1.5;color:var(--faint);margin:0 0 9px}
   .hide{display:none}
 </style>
 </head>
@@ -275,6 +307,18 @@
     </summary>
     <div class="accBody"><div id="sideRecipes"></div></div>
   </details>
+  <details class="acc" id="accTrends">
+    <summary class="accHead">
+      <svg class="accChev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="accTitle">Trends</span>
+      <span class="accMeta" id="trendCount"></span>
+    </summary>
+    <div class="accBody">
+      <p class="trendNote">Choose which weekly measurements to plot. Each gets its own chart &mdash;
+        weight is kg and the rest are cm, so they can&rsquo;t share a scale.</p>
+      <div class="trendGrid" id="trendToggles"></div>
+    </div>
+  </details>
 </aside>
 <div class="wrap" id="root"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -303,6 +347,18 @@ function persist(){localStorage.setItem("rt_meas",JSON.stringify(meas));
   localStorage.setItem("rt_adj",JSON.stringify(adj));localStorage.setItem("rt_recipes",JSON.stringify(recipes));
   localStorage.setItem("rt_activity",JSON.stringify(activity));}
 function persistActivity(){localStorage.setItem("rt_activity",JSON.stringify(activity));}
+// ---- v4: trend metric selection -----------------------------------------
+// Each metric is plotted as its own small multiple: weight is kg and the rest
+// are cm, so a shared y-axis would be meaningless.
+// Palette: Okabe-Ito, re-stepped into the dark-mode lightness band and
+// validated (adjacent pairs, dark surface #162034): worst CVD dE 13.4 (deutan),
+// worst normal-vision dE 15.2, all >= 3:1 contrast. Fixed order - never cycled.
+var CHART_COLOR={weight:"#C58700",waist:"#3E9BD1",chest:"#009E73",
+                 hips:"#0072B2",arm:"#D55E00",thigh:"#B06691"};
+var chartSel=load("rt_charts",["waist","weight"]);
+if(!Array.isArray(chartSel))chartSel=["waist","weight"];
+function persistCharts(){localStorage.setItem("rt_charts",JSON.stringify(chartSel));}
+
 
 // ---- helpers -------------------------------------------------------------
 function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
@@ -531,12 +587,35 @@ function updSidebar(){
     var d=localDay(i),items=(nutri[d]||{}).items||[],tot=totals(items);
     last.push({date:d,items:items,total:tot,score:items.length?scoreOf(tot,tg):null});
   }
-  el("sideLast5").innerHTML='<table class="macro5"><thead><tr><th class="l">Day</th><th>P</th><th>C</th><th>F</th></tr></thead><tbody>'+last.map(function(day,idx){
+  var openDays={};
+  Array.prototype.forEach.call(el("sideLast5").querySelectorAll("details[data-date]"),function(d){
+    if(d.open)openDays[d.getAttribute("data-date")]=1;});
+  el("sideLast5").innerHTML=last.map(function(day,idx){
     var label=idx===0?"Today":new Date(day.date+"T00:00").toLocaleDateString(undefined,{weekday:"short"});
     var dateText=new Date(day.date+"T00:00").toLocaleDateString(undefined,{day:"numeric",month:"short"});
-    return '<tr><td class="l macroDate">'+label+'<small>'+dateText+'</small></td>'+(
-      day.items.length?'<td>'+Math.round(day.total.p)+'</td><td>'+Math.round(day.total.c)+'</td><td>'+Math.round(day.total.f)+'</td>':'<td class="muted">—</td><td class="muted">—</td><td class="muted">—</td>')+'</tr>';
-  }).join("")+'</tbody></table>';
+    var name='<span class="dayLabel">'+label+'<small>'+dateText+'</small></span>';
+    if(!day.items.length)
+      return '<div class="dayRow empty">'+name+'<span class="dayMacros mono">not logged</span></div>';
+    var macros=Math.round(day.total.p)+'P '+Math.round(day.total.c)+'C '+Math.round(day.total.f)+'F';
+    var body=day.items.map(function(it,k){
+      return '<div class="dayItem"><div class="dayItemMain">'+
+        '<div class="dayItemName">'+esc(it.name)+'</div>'+
+        '<div class="dayItemMeta mono">'+Math.round(kcalOf(it))+' kcal · '+it.p+'P '+it.c+'C '+it.f+'F</div>'+
+        '</div><button class="dayAdd" type="button" data-readd="'+esc(day.date)+'|'+k+'">+ Today</button></div>';
+    }).join("");
+    return '<details class="dayRow" data-date="'+esc(day.date)+'"'+(openDays[day.date]?' open':'')+'>'+
+      '<summary class="dayHead"><svg class="accChev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'+name+'<span class="dayMacros mono">'+macros+'</span></summary>'+
+      '<div class="dayBody">'+body+'</div></details>';
+  }).join("");
+  Array.prototype.forEach.call(el("sideLast5").querySelectorAll("[data-readd]"),function(b){
+    b.onclick=function(ev){
+      ev.preventDefault();ev.stopPropagation();
+      var parts=b.getAttribute("data-readd").split("|");
+      var src=((nutri[parts[0]]||{}).items||[])[+parts[1]];
+      if(!src)return;
+      addToToday({name:src.name,p:src.p,c:src.c,f:src.f},src.name+" added to today.");
+      updSidebar();
+    };});
   var logged=last.filter(function(d){return d.items.length;});
   var sum=logged.reduce(function(a,d){a.kcal+=d.total.kcal;a.p+=d.total.p;a.score+=d.score;return a;},{kcal:0,p:0,score:0});
   var n=logged.length;
@@ -599,8 +678,9 @@ function lineChart(points,color,label,unit,refY){
   var path=pts.map(function(p,i){return (i?"L":"M")+" "+X(i).toFixed(1)+" "+Y(p.v).toFixed(1);}).join(" ");
   var dots=pts.map(function(p,i){return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(p.v).toFixed(1)+'" r="3" fill="'+color+'"/>';}).join("");
   var ref=refY!=null?'<line x1="'+pl+'" y1="'+Y(refY).toFixed(1)+'" x2="'+(W-pr)+'" y2="'+Y(refY).toFixed(1)+'" stroke="var(--gold)" stroke-dasharray="4 4"/><text x="'+(W-pr)+'" y="'+(Y(refY)-4).toFixed(1)+'" font-size="9" text-anchor="end" fill="var(--gold)">target</text>':'';
-  var yl=[mn,(mn+mx)/2,mx].map(function(v){return '<text x="'+(pl-4)+'" y="'+(Y(v)+3).toFixed(1)+'" font-size="9" text-anchor="end" class="mono" fill="var(--faint)">'+v.toFixed(0)+'</text>';}).join("");
-  var xl='<text x="'+X(0)+'" y="'+(H-6)+'" font-size="9" text-anchor="middle" class="mono" fill="var(--faint)">'+pts[0].d+'</text><text x="'+X(pts.length-1)+'" y="'+(H-6)+'" font-size="9" text-anchor="middle" class="mono" fill="var(--faint)">'+pts[pts.length-1].d+'</text>';
+  var dp=(mx-mn)<3?1:0;
+  var yl=[mn,(mn+mx)/2,mx].map(function(v){return '<text x="'+(pl-4)+'" y="'+(Y(v)+3).toFixed(1)+'" font-size="9" text-anchor="end" class="mono" fill="var(--faint)">'+v.toFixed(dp)+'</text>';}).join("");
+  var xl='<text x="'+pl+'" y="'+(H-6)+'" font-size="9" text-anchor="start" class="mono" fill="var(--faint)">'+pts[0].d+'</text><text x="'+(W-pr)+'" y="'+(H-6)+'" font-size="9" text-anchor="end" class="mono" fill="var(--faint)">'+pts[pts.length-1].d+'</text>';
   return '<div class="chline"><span class="chlab">'+label+'</span><span class="chunit mono">'+unit+'</span></div>'+
     '<svg viewBox="0 0 '+W+' '+H+'" width="100%">'+ref+yl+xl+'<path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="2.5"/>'+dots+'</svg>';
 }
@@ -848,12 +928,31 @@ function applyProposal(){
 }
 function updCharts(){
   var e=sortedMeas();
-  if(e.length<2){el("chartCard").className="card hide";return;}
+  var sel=FIELDS.filter(function(f){return chartSel.indexOf(f.k)>=0;});
+  if(e.length<2||!sel.length){el("chartCard").className="card hide";return;}
+  var svgs=sel.map(function(f){
+    var pts=e.map(function(x){return {d:x.date.slice(5),v:x[f.k]!=null?x[f.k]:null};});
+    return lineChart(pts,CHART_COLOR[f.k],f.l,f.u,f.k==="waist"?HEIGHT*WTHR_TARGET:null);
+  }).filter(function(h){return !!h;});
+  if(!svgs.length){el("chartCard").className="card hide";return;}
   el("chartCard").className="card";
-  var w=e.map(function(x){return {d:x.date.slice(5),v:x.waist!=null?x.waist:null};});
-  var kg=e.map(function(x){return {d:x.date.slice(5),v:x.weight!=null?x.weight:null};});
-  el("charts").innerHTML=lineChart(w,"var(--navy)","Waist","cm",HEIGHT*WTHR_TARGET)+
-    '<div style="height:10px"></div>'+lineChart(kg,"var(--steel)","Weight","kg",null);
+  el("charts").innerHTML=svgs.join('<div style="height:16px"></div>');
+}
+function renderTrendToggles(){
+  var box=el("trendToggles");if(!box)return;
+  box.innerHTML=FIELDS.map(function(f){
+    var on=chartSel.indexOf(f.k)>=0;
+    return '<button class="trendChip'+(on?' on':'')+'" type="button" data-metric="'+f.k+'" '+
+      'aria-pressed="'+(on?'true':'false')+'"><span class="trendSw" style="background:'+
+      CHART_COLOR[f.k]+'"></span>'+esc(f.l)+'</button>';
+  }).join("");
+  Array.prototype.forEach.call(box.querySelectorAll("[data-metric]"),function(b){
+    b.onclick=function(){
+      var k=b.getAttribute("data-metric"),at=chartSel.indexOf(k);
+      if(at>=0)chartSel.splice(at,1);else chartSel.push(k);
+      persistCharts();renderTrendToggles();updCharts();
+    };});
+  var c=el("trendCount");if(c)c.textContent=chartSel.length+" of "+FIELDS.length;
 }
 function updHistory(){
   var e=sortedMeas();
@@ -868,13 +967,14 @@ function updHistory(){
     var d=b.getAttribute("data-d"); meas=meas.filter(function(m){return m.date!==d;}); persist(); updAll();};});
 }
 function enforceSafety(){ if(currentWeight()<WEIGHT_FLOOR && preset==="deficit"){preset="recomp"; persist();} }
-function updAll(){enforceSafety();updTargets();updNutrition();updActivity();updDial();updAnalysis();updCharts();updHistory();}
+function updAll(){enforceSafety();updTargets();updNutrition();updActivity();renderTrendToggles();updDial();updAnalysis();updCharts();updHistory();}
 
 // ---- events --------------------------------------------------------------
 function wire(){
   el("chips").innerHTML=QUICK.map(function(q,i){return '<button class="pill" data-i="'+i+'">+ '+esc(q.name)+'</button>';}).join("");
   Array.prototype.forEach.call(el("chips").querySelectorAll(".pill"),function(b){b.onclick=function(){
     var q=QUICK[+b.getAttribute("data-i")];addToToday(q);};});
+  renderTrendToggles();
   el("addFood").onclick=function(){
     var it=foodFromInputs();if(!it.p&&!it.c&&!it.f)return;addToToday(it);clearFoodInputs();};
   el("saveRecipe").onclick=function(){saveRecipeFromForm();};

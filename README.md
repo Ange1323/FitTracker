@@ -1,4 +1,4 @@
-# Recomp Tracker PWA — version 3.1.0
+# Recomp Tracker PWA — version 4.0.0
 
 This release keeps the existing local-first tracker and the Apple Health / Apple Watch activity
 bridge, and restyles the app on a dark canvas with collapsible drawer sections.
